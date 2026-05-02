@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    id("org.jetbrains.kotlin.kapt")
 }
 
 android {
@@ -55,6 +56,8 @@ dependencies {
     //implementation(libs.androidx.ui.test.android)
     implementation(libs.firebase.crashlytics.buildtools)
     implementation(libs.ads.mobile.sdk)
+    implementation(libs.androidx.room.common.jvm)
+    implementation(libs.androidx.room.runtime.android)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     //androidTestImplementation(libs.androidx.espresso.core)
@@ -71,4 +74,9 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.8.0")
     implementation("androidx.compose.material3:material3-window-size-class:1.2.0")
     implementation("com.google.code.gson:gson:2.10.1")
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
+    implementation(libs.androidx.room.runtime.android)
+    implementation("androidx.room:room-ktx:2.8.4")
+
+    kapt("androidx.room:room-compiler:2.8.4")
 }
