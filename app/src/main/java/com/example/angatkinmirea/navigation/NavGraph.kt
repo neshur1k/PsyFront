@@ -77,6 +77,9 @@ fun NavGraph(
                 viewModel = vm,
                 onBack = {
                     nav.popBackStack()
+                },
+                onEdit = { id ->
+                    nav.navigate(Screen.Edit.createRoute(id))
                 }
             )
         }
