@@ -31,12 +31,10 @@ class TodoViewModel(
     val isColorEnabled: StateFlow<Boolean> = _isColorEnabled
 
     init {
-        // 🔥 1. Инициализация БД (импорт JSON один раз)
         viewModelScope.launch {
             repository.init()
         }
 
-        // 🔥 2. Подписка на Flow из Room
         viewModelScope.launch {
             getTodosUseCase().collect { todos ->
                 _todosState.value = todos
@@ -57,7 +55,6 @@ class TodoViewModel(
         }
     }
 
-    // (понадобится для задания — CRUD)
     fun addTodo(todo: TodoItem) {
         viewModelScope.launch {
             repository.addTodo(todo)
