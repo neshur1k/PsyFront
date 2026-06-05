@@ -1,9 +1,11 @@
 package com.example.angatkinmirea.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.*
 import com.example.angatkinmirea.presentation.createarticle.CreateArticleScreen
 import com.example.angatkinmirea.presentation.feed.FeedScreen
+import com.example.angatkinmirea.presentation.feed.FeedViewModel
 import com.example.angatkinmirea.presentation.meditation.MeditationScreen
 import com.example.angatkinmirea.presentation.profile.ProfileScreen
 
@@ -25,7 +27,11 @@ fun AppNavGraph() {
             composable(
                 Routes.FEED
             ) {
-                FeedScreen()
+                val viewModel: FeedViewModel = viewModel()
+
+                FeedScreen(
+                    viewModel = viewModel
+                )
             }
 
             composable(

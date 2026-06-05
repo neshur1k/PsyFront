@@ -1,5 +1,6 @@
 package com.example.angatkinmirea.data.remote
 
+import com.example.angatkinmirea.domain.model.Article
 import com.example.angatkinmirea.domain.model.LoginRequest
 import com.example.angatkinmirea.domain.model.LoginResponse
 import io.ktor.client.call.body
@@ -7,6 +8,8 @@ import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
+import io.ktor.client.request.get
+
 
 class ApiService {
 
@@ -30,5 +33,12 @@ class ApiService {
                 )
             )
         }.body()
+    }
+
+    suspend fun getArticles(): List<Article> {
+
+        return client.get(
+            "http://10.0.2.2:8080/articles"
+        ).body()
     }
 }
