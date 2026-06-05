@@ -8,20 +8,22 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun LoginScreen(
-    viewModel: LoginViewModel
+    viewModel: LoginViewModel,
+    onSuccess: () -> Unit
 ) {
 
-    var login by remember {
-        mutableStateOf("")
-    }
-
-    var password by remember {
-        mutableStateOf("")
-    }
+    var login by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
 
     val token by viewModel.token.collectAsState()
-
     val error by viewModel.error.collectAsState()
+
+    // 🚀 реакция на успешный логин
+    LaunchedEffect(token) {
+        if (token != null) {
+            onSuccess()
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -31,58 +33,41 @@ fun LoginScreen(
 
         OutlinedTextField(
             value = login,
-            onValueChange = {
-                login = it
-            },
-            label = {
-                Text("Логин")
-            }
+            onValueChange = { login = it },
+            label = { Text("Логин") },
+            modifier = Modifier.fillMaxWidth()
         )
 
-        Spacer(
-            modifier = Modifier.height(8.dp)
-        )
+        Spacer(Modifier.height(8.dp))
 
         OutlinedTextField(
             value = password,
-            onValueChange = {
-                password = it
-            },
-            label = {
-                Text("Пароль")
-            }
+            onValueChange = { password = it },
+            label = { Text("Пароль") },
+            modifier = Modifier.fillMaxWidth()
         )
 
-        Spacer(
-            modifier = Modifier.height(16.dp)
-        )
+        Spacer(Modifier.height(16.dp))
 
         Button(
             onClick = {
-                viewModel.login(
-                    login,
-                    password
-                )
-            }
+                viewModel.login(login, password)
+            },
+            modifier = Modifier.fillMaxWidth()
         ) {
             Text("Войти")
         }
 
-        Spacer(
-            modifier = Modifier.height(16.dp)
-        )
+        Spacer(Modifier.height(16.dp))
 
         token?.let {
-
-            Text(
-                text = "Успешный вход"
-            )
+            Text("Успешный вход")
         }
 
         error?.let {
-
             Text(
-                text = it
+                text = it,
+                color = MaterialTheme.colorScheme.error
             )
         }
     }

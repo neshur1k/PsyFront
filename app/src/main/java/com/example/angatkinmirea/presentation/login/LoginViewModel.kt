@@ -61,4 +61,12 @@ class LoginViewModel(
             }
         }
     }
+
+    fun logout(onDone: () -> Unit) {
+        viewModelScope.launch {
+            tokenStorage.clearToken()
+            _token.value = null
+            onDone()
+        }
+    }
 }
