@@ -1,18 +1,28 @@
 package com.example.angatkinmirea.presentation.login
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.angatkinmirea.data.datastore.TokenStorage
 import com.example.angatkinmirea.data.remote.ApiService
 import com.example.angatkinmirea.data.repository.AuthRepositoryImpl
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class LoginViewModel : ViewModel() {
+class LoginViewModel(
+    application: Application
+) : AndroidViewModel(application) {
 
     private val repository =
         AuthRepositoryImpl(
             ApiService()
+        )
+
+    private val tokenStorage =
+        TokenStorage(
+            getApplication()
         )
 
     private val _token =
@@ -41,7 +51,7 @@ class LoginViewModel : ViewModel() {
                         login,
                         password
                     )
-
+                tokenStorage.saveToken(token)
                 _token.value = token
 
             } catch (e: Exception) {
