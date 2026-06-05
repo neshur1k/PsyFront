@@ -33,4 +33,8 @@ class ArticleRepositoryImpl(
 
     suspend fun getArticleById(id: Int) =
         api.getArticleById(id)
+
+    suspend fun deleteArticle(id: Int, token: String) {
+        api.deleteArticle(id, token)
+    }
 }

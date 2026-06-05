@@ -18,29 +18,34 @@ class TokenStorage(
 
         private val TOKEN_KEY =
             stringPreferencesKey("token")
+
+        private val ROLE_KEY =
+            stringPreferencesKey("role")
     }
 
-    suspend fun saveToken(
-        token: String
-    ) {
-
+    suspend fun saveToken(token: String) {
         context.dataStore.edit {
-
             it[TOKEN_KEY] = token
         }
     }
 
     suspend fun getToken(): String? {
-
-        return context.dataStore.data
-            .first()[TOKEN_KEY]
+        return context.dataStore.data.first()[TOKEN_KEY]
     }
 
     suspend fun clearToken() {
-
         context.dataStore.edit {
-
-            it.remove(TOKEN_KEY)
+            it.clear()
         }
+    }
+
+    suspend fun saveRole(role: String) {
+        context.dataStore.edit {
+            it[ROLE_KEY] = role
+        }
+    }
+
+    suspend fun getRole(): String? {
+        return context.dataStore.data.first()[ROLE_KEY]
     }
 }

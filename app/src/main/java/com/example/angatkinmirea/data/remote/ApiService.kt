@@ -11,6 +11,8 @@ import io.ktor.http.contentType
 import io.ktor.client.request.get
 import com.example.angatkinmirea.data.model.CreateArticleRequest
 import com.example.angatkinmirea.data.model.RegisterRequest
+import com.example.angatkinmirea.domain.model.User
+import io.ktor.client.request.delete
 import io.ktor.client.request.header
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
@@ -83,5 +85,24 @@ class ApiService {
     suspend fun getArticleById(id: Int): Article {
         return client.get("http://10.0.2.2:8080/articles/$id")
             .body()
+    }
+
+    suspend fun deleteArticle(id: Int, token: String) {
+        try {
+            client.delete("http://10.0.2.2:8080/articles/$id") {
+                header(HttpHeaders.Authorization, "Bearer $token")
+            }
+        } catch (e: Exception) {
+            throw e
+        }
+    }
+
+    suspend fun getMe(token: String): User {
+        return client.get("http://10.0.2.2:8080/me") {
+            header(
+                HttpHeaders.Authorization,
+                "Bearer $token"
+            )
+        }.body()
     }
 }

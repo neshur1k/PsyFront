@@ -8,6 +8,7 @@ import com.example.angatkinmirea.domain.model.Article
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import com.example.angatkinmirea.data.datastore.TokenStorage
 
 class FeedViewModel : ViewModel() {
 
@@ -39,6 +40,20 @@ class FeedViewModel : ViewModel() {
 
             } catch (e: Exception) {
                 println("ERROR: ${e.message}")
+                e.printStackTrace()
+            }
+        }
+    }
+
+    fun deleteArticle(id: Int, token: String) {
+        viewModelScope.launch {
+            try {
+                repository.deleteArticle(id, token)
+
+                _articles.value =
+                    _articles.value.filterNot { it.id == id }
+
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
         }

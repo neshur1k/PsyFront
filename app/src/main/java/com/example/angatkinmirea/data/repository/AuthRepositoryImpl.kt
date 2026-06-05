@@ -1,6 +1,7 @@
 package com.example.angatkinmirea.data.repository
 
 import com.example.angatkinmirea.data.remote.ApiService
+import com.example.angatkinmirea.domain.model.LoginResponse
 import com.example.angatkinmirea.domain.repository.AuthRepository
 
 class AuthRepositoryImpl(
@@ -10,11 +11,8 @@ class AuthRepositoryImpl(
     override suspend fun login(
         login: String,
         password: String
-    ): String {
+    ): LoginResponse {
 
-        return api.login(
-            login,
-            password
-        ).token
+        return api.login(login, password)
     }
 }

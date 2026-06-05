@@ -15,49 +15,31 @@ class LoginViewModel(
     application: Application
 ) : AndroidViewModel(application) {
 
-    private val repository =
-        AuthRepositoryImpl(
-            ApiService()
-        )
+    private val repository = AuthRepositoryImpl(ApiService())
+    private val tokenStorage = TokenStorage(getApplication())
 
-    private val tokenStorage =
-        TokenStorage(
-            getApplication()
-        )
+    private val _token = MutableStateFlow<String?>(null)
+    val token: StateFlow<String?> = _token
 
-    private val _token =
-        MutableStateFlow<String?>(null)
+    private val _error = MutableStateFlow<String?>(null)
+    val error: StateFlow<String?> = _error
 
-    val token: StateFlow<String?> =
-        _token
-
-    private val _error =
-        MutableStateFlow<String?>(null)
-
-    val error: StateFlow<String?> =
-        _error
-
-    fun login(
-        login: String,
-        password: String
-    ) {
-
+    fun login(login: String, password: String) {
         viewModelScope.launch {
-
             try {
 
-                val token =
-                    repository.login(
-                        login,
-                        password
-                    )
-                tokenStorage.saveToken(token)
-                _token.value = token
+                val response = repository.login(login, password)
+
+                tokenStorage.saveToken(response.token)
+
+                _token.value = response.token
+
+                val me = ApiService().getMe(response.token)
+
+                tokenStorage.saveRole(me.role)
 
             } catch (e: Exception) {
-
-                _error.value =
-                    e.message
+                _error.value = e.message
             }
         }
     }
