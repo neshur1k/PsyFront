@@ -4,13 +4,17 @@ import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.*
 import com.example.angatkinmirea.presentation.createarticle.CreateArticleScreen
+import com.example.angatkinmirea.presentation.createarticle.CreateArticleViewModelFactory
 import com.example.angatkinmirea.presentation.feed.FeedScreen
 import com.example.angatkinmirea.presentation.feed.FeedViewModel
 import com.example.angatkinmirea.presentation.meditation.MeditationScreen
 import com.example.angatkinmirea.presentation.profile.ProfileScreen
+import com.example.angatkinmirea.presentation.createarticle.CreateArticleViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
+import android.app.Application
 
 @Composable
-fun AppNavGraph() {
+fun AppNavGraph(application: Application) {
 
     val navController =
         rememberNavController()
@@ -37,7 +41,17 @@ fun AppNavGraph() {
             composable(
                 Routes.CREATE_ARTICLE
             ) {
-                CreateArticleScreen()
+
+                val viewModel =
+                    CreateArticleViewModelFactory(
+                        application
+                    ).create(
+                        CreateArticleViewModel::class.java
+                    )
+
+                CreateArticleScreen(
+                    viewModel = viewModel
+                )
             }
 
             composable(

@@ -27,7 +27,9 @@ class MainActivity : ComponentActivity() {
                 )
 
                  */
-                AppNavGraph()
+                AppNavGraph(
+                    application = application
+                )
             }
         }
     }

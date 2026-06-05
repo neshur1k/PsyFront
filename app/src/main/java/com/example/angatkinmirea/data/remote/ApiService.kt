@@ -9,6 +9,11 @@ import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import io.ktor.client.request.get
+import com.example.angatkinmirea.data.model.CreateArticleRequest
+import io.ktor.client.request.header
+import io.ktor.client.request.post
+import io.ktor.client.request.setBody
+import io.ktor.http.HttpHeaders
 
 
 class ApiService {
@@ -40,5 +45,28 @@ class ApiService {
         return client.get(
             "http://10.0.2.2:8080/articles"
         ).body()
+    }
+
+    suspend fun createArticle(
+        token: String,
+        request: CreateArticleRequest
+    ) {
+        println("TOKEN: $token")
+        println("REQUEST: $request")
+        client.post(
+            "http://10.0.2.2:8080/articles"
+        ) {
+
+            header(
+                HttpHeaders.Authorization,
+                "Bearer $token"
+            )
+
+            contentType(
+                ContentType.Application.Json
+            )
+
+            setBody(request)
+        }
     }
 }
