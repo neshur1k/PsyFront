@@ -13,4 +13,10 @@ object Routes {
     const val MEDITATION = "meditation"
 
     const val PROFILE = "profile"
+
+    const val ARTICLE_DETAILS = "article_details/{articleId}"
+
+    fun articleDetails(id: Int): String {
+        return "article_details/$id"
+    }
 }

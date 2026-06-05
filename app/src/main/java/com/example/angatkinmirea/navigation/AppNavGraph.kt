@@ -13,6 +13,10 @@ import com.example.angatkinmirea.presentation.profile.ProfileScreen
 import com.example.angatkinmirea.presentation.login.*
 import com.example.angatkinmirea.presentation.register.RegisterScreen
 import androidx.compose.foundation.layout.Box
+import com.example.angatkinmirea.data.remote.ApiService
+import com.example.angatkinmirea.presentation.articledetails.ArticleDetailsScreen
+import com.example.angatkinmirea.presentation.articledetails.ArticleDetailsViewModel
+import com.example.angatkinmirea.presentation.articledetails.ArticleDetailsViewModelFactory
 
 @Composable
 fun AppNavGraph(application: Application) {
@@ -67,7 +71,6 @@ fun AppNavGraph(application: Application) {
         return
     }
 
-    // 🟢 MAIN APP FLOW (WITH BOTTOM BAR)
     MainScreen(navController = navController) {
 
         NavHost(
@@ -77,7 +80,13 @@ fun AppNavGraph(application: Application) {
 
             composable(Routes.FEED) {
                 val vm: FeedViewModel = viewModel()
-                FeedScreen(vm)
+
+                FeedScreen(
+                    viewModel = vm,
+                    onArticleClick = { id ->
+                        navController.navigate("article_details/$id")
+                    }
+                )
             }
 
             composable(Routes.CREATE_ARTICLE) {
@@ -97,6 +106,20 @@ fun AppNavGraph(application: Application) {
                     onLogout = {
                         isLoggedIn = false
                     }
+                )
+            }
+
+            composable("article_details/{articleId}") { backStackEntry ->
+
+                val id = backStackEntry.arguments?.getString("articleId")!!.toInt()
+
+                val vm: ArticleDetailsViewModel = viewModel(
+                    factory = ArticleDetailsViewModelFactory(ApiService())
+                )
+
+                ArticleDetailsScreen(
+                    articleId = id,
+                    viewModel = vm
                 )
             }
         }

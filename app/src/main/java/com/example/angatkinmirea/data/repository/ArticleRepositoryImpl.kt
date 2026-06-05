@@ -30,4 +30,7 @@ class ArticleRepositoryImpl(
             )
         )
     }
+
+    suspend fun getArticleById(id: Int) =
+        api.getArticleById(id)
 }
