@@ -3,6 +3,7 @@ package com.example.angatkinmirea.presentation.login
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
@@ -25,59 +26,61 @@ fun LoginScreen(
         }
     }
 
-    Column(
+    Box(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .padding(16.dp),
+        contentAlignment = Alignment.Center
     ) {
 
-        OutlinedTextField(
-            value = login,
-            onValueChange = { login = it },
-            label = { Text("Логин") },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(Modifier.height(8.dp))
-
-        OutlinedTextField(
-            value = password,
-            onValueChange = { password = it },
-            label = { Text("Пароль") },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(Modifier.height(16.dp))
-
-        Button(
-            onClick = {
-                viewModel.login(login, password)
-            },
-            modifier = Modifier.fillMaxWidth()
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            verticalArrangement = Arrangement.Center
         ) {
-            Text("Войти")
-        }
 
-        Spacer(Modifier.height(16.dp))
-
-        Button(
-            onClick = onRegisterClick,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text("Зарегистрироваться")
-        }
-
-        Spacer(Modifier.height(16.dp))
-
-        token?.let {
-            Text("Успешный вход")
-        }
-
-        error?.let {
-            Text(
-                text = it,
-                color = MaterialTheme.colorScheme.error
+            OutlinedTextField(
+                value = login,
+                onValueChange = { login = it },
+                label = { Text("Логин") },
+                modifier = Modifier.fillMaxWidth()
             )
+
+            Spacer(Modifier.height(8.dp))
+
+            OutlinedTextField(
+                value = password,
+                onValueChange = { password = it },
+                label = { Text("Пароль") },
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Spacer(Modifier.height(16.dp))
+
+            Button(
+                onClick = {
+                    viewModel.login(login, password)
+                },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Войти")
+            }
+
+            Spacer(Modifier.height(12.dp))
+
+            Button(
+                onClick = onRegisterClick,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Зарегистрироваться")
+            }
+
+            error?.let {
+                Spacer(Modifier.height(12.dp))
+                Text(
+                    text = "Ошибка",
+                    color = MaterialTheme.colorScheme.error
+                )
+            }
         }
     }
 }

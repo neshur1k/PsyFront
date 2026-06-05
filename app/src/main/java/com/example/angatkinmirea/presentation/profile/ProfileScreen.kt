@@ -3,6 +3,7 @@ package com.example.angatkinmirea.presentation.profile
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -22,7 +23,6 @@ fun ProfileScreen(
 ) {
 
     val context = LocalContext.current
-
     val tokenStorage = remember {
         TokenStorage(context)
     }
@@ -49,55 +49,52 @@ fun ProfileScreen(
         }
     }
 
-    Column(
+    Box(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .padding(16.dp),
+        contentAlignment = Alignment.Center
     ) {
 
-        Text(
-            text = "Профиль",
-            style = MaterialTheme.typography.headlineMedium
-        )
-
-        Spacer(Modifier.height(16.dp))
-
-        user?.let {
+        Column {
 
             Text(
-                text = "Логин: ${it.login}"
+                text = "Профиль",
+                style = MaterialTheme.typography.headlineMedium
             )
 
-            Spacer(Modifier.height(8.dp))
+            Spacer(Modifier.height(16.dp))
 
-            Text(
-                text = "Никнейм: ${it.nickname}"
-            )
+            user?.let {
 
-            Spacer(Modifier.height(8.dp))
+                Text("Логин: ${it.login}")
+                Spacer(Modifier.height(8.dp))
 
-            Text(
-                text = "Роль: ${it.role}"
-            )
-        }
+                Text("Никнейм: ${it.nickname}")
+                Spacer(Modifier.height(8.dp))
 
-        error?.let {
-            Text(
-                text = it,
-                color = MaterialTheme.colorScheme.error
-            )
-        }
-
-        Spacer(Modifier.height(24.dp))
-
-        Button(
-            onClick = {
-                loginViewModel.logout {
-                    onLogout()
-                }
+                Text("Роль: ${it.role}")
             }
-        ) {
-            Text("Выйти из аккаунта")
+
+            error?.let {
+                Spacer(Modifier.height(8.dp))
+                Text(
+                    text = it,
+                    color = MaterialTheme.colorScheme.error
+                )
+            }
+
+            Spacer(Modifier.height(24.dp))
+
+            Button(
+                onClick = {
+                    loginViewModel.logout {
+                        onLogout()
+                    }
+                }
+            ) {
+                Text("Выйти из аккаунта")
+            }
         }
     }
 }
