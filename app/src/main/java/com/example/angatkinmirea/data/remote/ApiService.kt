@@ -10,6 +10,7 @@ import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import io.ktor.client.request.get
 import com.example.angatkinmirea.data.model.CreateArticleRequest
+import com.example.angatkinmirea.data.model.RegisterRequest
 import io.ktor.client.request.header
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
@@ -67,6 +68,15 @@ class ApiService {
             )
 
             setBody(request)
+        }
+    }
+
+    suspend fun register(login: String, password: String, nickname: String) {
+        client.post("http://10.0.2.2:8080/register") {
+            contentType(ContentType.Application.Json)
+            setBody(
+                RegisterRequest(login, password, nickname)
+            )
         }
     }
 }

@@ -7,11 +7,11 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.*
 import com.example.angatkinmirea.data.datastore.TokenStorage
 import com.example.angatkinmirea.presentation.createarticle.*
-import com.example.angatkinmirea.presentation.feed.FeedScreen
-import com.example.angatkinmirea.presentation.feed.FeedViewModel
+import com.example.angatkinmirea.presentation.feed.*
 import com.example.angatkinmirea.presentation.meditation.MeditationScreen
 import com.example.angatkinmirea.presentation.profile.ProfileScreen
 import com.example.angatkinmirea.presentation.login.*
+import com.example.angatkinmirea.presentation.register.RegisterScreen
 import androidx.compose.foundation.layout.Box
 
 @Composable
@@ -23,32 +23,51 @@ fun AppNavGraph(application: Application) {
 
     var isLoggedIn by remember { mutableStateOf<Boolean?>(null) }
 
-    // проверка токена при старте
     LaunchedEffect(Unit) {
         isLoggedIn = tokenStorage.getToken() != null
     }
 
-    // пока не знаем статус — можно показать загрузку
     if (isLoggedIn == null) {
         Box {}
         return
     }
 
+    // 🔐 AUTH FLOW
     if (isLoggedIn == false) {
 
-        // 🔐 LOGIN FLOW
-        LoginScreen(
-            viewModel = LoginViewModelFactory(application)
-                .create(LoginViewModel::class.java),
-            onSuccess = {
-                isLoggedIn = true
+        NavHost(
+            navController = navController,
+            startDestination = Routes.LOGIN
+        ) {
+
+            composable(Routes.LOGIN) {
+                LoginScreen(
+                    viewModel = LoginViewModelFactory(application)
+                        .create(LoginViewModel::class.java),
+
+                    onSuccess = {
+                        isLoggedIn = true
+                    },
+
+                    onRegisterClick = {
+                        navController.navigate(Routes.REGISTER)
+                    }
+                )
             }
-        )
+
+            composable(Routes.REGISTER) {
+                RegisterScreen(
+                    onSuccess = {
+                        navController.popBackStack()
+                    }
+                )
+            }
+        }
 
         return
     }
 
-    // 📱 MAIN APP FLOW
+    // 🟢 MAIN APP FLOW (WITH BOTTOM BAR)
     MainScreen(navController = navController) {
 
         NavHost(

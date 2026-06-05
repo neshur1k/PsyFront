@@ -9,7 +9,8 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun LoginScreen(
     viewModel: LoginViewModel,
-    onSuccess: () -> Unit
+    onSuccess: () -> Unit,
+    onRegisterClick: () -> Unit
 ) {
 
     var login by remember { mutableStateOf("") }
@@ -18,7 +19,6 @@ fun LoginScreen(
     val token by viewModel.token.collectAsState()
     val error by viewModel.error.collectAsState()
 
-    // 🚀 реакция на успешный логин
     LaunchedEffect(token) {
         if (token != null) {
             onSuccess()
@@ -56,6 +56,15 @@ fun LoginScreen(
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Войти")
+        }
+
+        Spacer(Modifier.height(16.dp))
+
+        Button(
+            onClick = onRegisterClick,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text("Зарегистрироваться")
         }
 
         Spacer(Modifier.height(16.dp))
